@@ -15,8 +15,8 @@ public class PlayerPOV : MonoBehaviour
     void Start()
     {
         // カーソルを非表示＆ロック
-        Cursor.lockState = CursorLockMode.Locked;   // カーソルを画面中央に固定
-        Cursor.visible = false;                     // カーソルを非表示にする
+        //Cursor.lockState = CursorLockMode.Locked;   // カーソルを画面中央に固定
+        //Cursor.visible = false;                     // カーソルを非表示にする
     }
 
     // 毎フレーム実行される

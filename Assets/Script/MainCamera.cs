@@ -29,6 +29,10 @@ public class MainCamera : MonoBehaviour
 
     void Update()
     {
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+
+        Debug.DrawRay(ray.origin, ray.direction * distance, Color.blue);
         /*
         //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         Ray ray = new Ray(transform.position, transform.forward);
