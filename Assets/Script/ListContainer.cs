@@ -156,7 +156,7 @@ public class ListContainer : MonoBehaviour
 
         if (dy < -204)
         {
-            // 上限を超えたら最上部ひとつこわして一番下にひとつ追加
+            // 上限を超えたら一番上をひとつこわして一番下にひとつ追加
             Destroy(cardContainer.transform.GetChild(0).gameObject);
 
 
@@ -169,7 +169,7 @@ public class ListContainer : MonoBehaviour
         {
             Destroy(cardContainer.transform.GetChild(7).gameObject);
 
-            // 上限を超えたら最上部ひとつこわして一番下にひとつ追加
+            // 下限を超えたら一番下をひとつこわして一番上にひとつ追加
             int tmp = ((currentIndex + comments.Count) - (3 % comments.Count)) % comments.Count;
             //Debug.Log("currentIndex=" + currentIndex + " tmp=" + tmp);
             AddCard(comments[tmp], 0);
