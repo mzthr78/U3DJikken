@@ -13,6 +13,8 @@ public class ListContainer : MonoBehaviour
     public GameObject cardPrefab;
 
     public TextMeshProUGUI debugInfo;
+    public TextMeshProUGUI debugInfo2;
+    public TextMeshProUGUI debugInfo3;
 
     struct Comment
     {
@@ -109,33 +111,61 @@ public class ListContainer : MonoBehaviour
     }
 
     bool isDragStart = false;
-    Vector3 startMousePos = Vector3.zero;
+    Vector3 prevMousePos = Vector3.zero;
     Vector3 startPos = Vector3.zero;
 
     public void OnBeginDrag()
     {
-        startMousePos = Input.mousePosition;
+        prevMousePos = Input.mousePosition;
         startPos = cardContainer.transform.position;
     }
 
     public void OnDrag()
     {
         Vector3 currentMousPos = Input.mousePosition;
-        Vector3 drag = (currentMousPos - startMousePos);
-        
-        if (drag.y != 0)
-        {
-            cardContainer.transform.position = startPos + new Vector3(0, drag.y, 0);
-            
-            float dy = transform.position.y - cardContainer.transform.position.y;
-            debugInfo.text = dy.ToString();
+        Vector3 drag = (currentMousPos - prevMousePos);
 
+        
+        if (drag.y == 0) return;
+
+        float mag = Mouse.current.delta.magnitude * 5f;
+
+        cardContainer.transform.position += new Vector3(0, mag * Math.Sign(drag.y), 0);
+
+        float dy = transform.position.y - cardContainer.transform.position.y;
+        debugInfo.text = dy.ToString();
+
+        if (dy < -204)
+        {
+            // 上限を超えたら一番上をひとつこわして一番下にひとつ追加
+            Destroy(cardContainer.transform.GetChild(0).gameObject);
+
+
+            AddCard(comments[(currentIndex + 6) % comments.Count]);
+
+            cardContainer.transform.position = transform.position + new Vector3(0, 102.0f, 0);
+
+            currentIndex = (currentIndex + 1) % comments.Count;
+        } else if (dy > -102)
+        {
+            Destroy(cardContainer.transform.GetChild(7).gameObject);
+
+            // 下限を超えたら一番下をひとつこわして一番上にひとつ追加
+            int tmp = ((currentIndex + comments.Count) - (3 % comments.Count)) % comments.Count;
+            //Debug.Log("currentIndex=" + currentIndex + " tmp=" + tmp);
+            AddCard(comments[tmp], 0);
+            
+            cardContainer.transform.position = transform.position + new Vector3(0, 102.0f * 2, 0);
+
+            currentIndex = (comments.Count + currentIndex - 1) % comments.Count;
         }
+
+        prevMousePos = Input.mousePosition;
     }
 
     public void OnEndDrag()
     {
-        startMousePos = Vector3.zero;
+        prevMousePos = Vector3.zero;
     }
 
 
@@ -146,9 +176,6 @@ public class ListContainer : MonoBehaviour
         float sensitive = 5f;
         Vector2 vec = Mouse.current.scroll.ReadValue();
         float mag = Mouse.current.scroll.magnitude * sensitive;
-
-        //obj.transform.position -= new Vector3(0, vec.y, 0);
-        //Debug.Log("OnScroll" + data.position + " ");
 
         cardContainer.transform.position -= new Vector3(0, mag * Math.Sign(vec.y), 0);
         float dy = transform.position.y - cardContainer.transform.position.y;
