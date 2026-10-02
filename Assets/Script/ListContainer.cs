@@ -60,6 +60,7 @@ public class ListContainer : MonoBehaviour
         comments.Add(new Comment("kasa", "name6", "comment6"));
         comments.Add(new Comment("kumo", "name7", "comment7"));
         
+        // ここらへんリスト数に対応できとらんな
         for (int i = 0; i < 6; i++)
         {
             AddCard(comments[i]);
