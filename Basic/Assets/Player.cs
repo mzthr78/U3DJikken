@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] float mouseSensitivity = 100f;
     [SerializeField] private float jumpPower = 5f;
 
-    private Vector2 inputDir;
+    private Vector2 moveDir;
     private Vector2 lookDir;
     private float rotationX = 0f;
 
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
         rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
         */
 
-        Vector3 move = (transform.right * inputDir.x + transform.forward * inputDir.y) * moveSpeed;
+        Vector3 move = (transform.right * moveDir.x + transform.forward * moveDir.y) * moveSpeed;
         rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
 
         Vector2 mouseXY = lookDir * mouseSensitivity * Time.deltaTime;
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
 
     void OnMove(InputValue value)
     {
-        inputDir = value.Get<Vector2>();
+        moveDir = value.Get<Vector2>();
     }
 
     void OnLook(InputValue value)
